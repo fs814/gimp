@@ -49,6 +49,7 @@ if have_vala and have_gobject_introspection
     dependencies: [
       libgimp_vapi, libgimpui_vapi, libgimpui_dep, math,
     ],
+    vala_args: ['--vapidir=' + meson.project_build_root() / 'vapi', '--pkg=babl-0.1'],
     c_args: [
       '-DGETTEXT_PACKAGE="@0@"'.format('org.gimp.extension.goat-exercises'),
       '-w',

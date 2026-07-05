@@ -219,6 +219,7 @@ if platform_osx
     #needed to allow targeting older macOS while building on newer macOS (like on MS Windows)
     add_project_arguments(osx_cflags, language: ['objc', 'c'])
   endif
+  add_project_arguments('-xobjective-c', language : 'c')
   osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit', '-ObjC']
   add_project_link_arguments(osx_ldflags, language : ['objc', 'c'])
   # libgimp_cflags += '-xobjective-c'
@@ -469,8 +470,8 @@ gegl              = dependency('gegl-0.4',           version: '>='+gegl_minver)
 exiv2_minver      = '0.27.4'
 exiv2             = dependency('exiv2',              version: '>='+exiv2_minver)
 gexiv2_minver     = '0.14.0'
-gexiv2_maxver     = '0.15.0'
-gexiv2            = dependency('gexiv2',             version: ['>='+gexiv2_minver, '<'+gexiv2_maxver])
+gexiv2_maxver     = '0.17.0'
+gexiv2            = dependency('gexiv2-0.16',       version: ['>='+gexiv2_minver, '<'+gexiv2_maxver])
 
 gio               = dependency('gio-2.0')
 gio_specific_name = platform_windows ? 'gio-windows-2.0' : 'gio-unix-2.0'

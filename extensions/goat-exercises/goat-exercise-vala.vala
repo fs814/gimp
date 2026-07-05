@@ -24,6 +24,9 @@ private const string PLUG_IN_BINARY = "goat-exercise-vala";
 private const string PLUG_IN_SOURCE = PLUG_IN_BINARY + ".vala";
 private const string URL = "https://gitlab.gnome.org/GNOME/gimp/blob/master/extensions/goat-exercises/goat-exercise-vala.vala";
 
+[CCode (cname = "gegl_render_op", cheader_filename = "gegl.h")]
+private extern static void gegl_render_op(Gegl.Buffer input, Gegl.Buffer output, string operation, ...);
+
 public int main(string[] args) {
   return Gimp.main(typeof(Goat), args);
 }
@@ -141,13 +144,13 @@ public class Goat : Gimp.PlugIn {
       return procedure.new_return_values(Gimp.PDBStatusType.CALLING_ERROR, error);
     }
 
-    unowned string[]? argv = null;
+    string[]? argv = {};
     Gegl.init(ref argv);
 
     {
       var buffer = drawable.get_buffer();
       var shadow_buffer = drawable.get_shadow_buffer();
-      Gegl.render_op(buffer, shadow_buffer, "gegl:invert", null);
+      gegl_render_op(buffer, shadow_buffer, "gegl:invert", null);
       // We don't need this line, since shadow_buffer is unreffed
       // at the end of this block.
       // No block? Then you still need to uncomment the following line

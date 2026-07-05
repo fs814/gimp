@@ -399,7 +399,7 @@ libgimp_deps_table = [
     { 'gir': 'cairo-1.0',         'vapi': 'cairo-1.0',       },
     { 'gir': 'GdkPixbuf-2.0',     'vapi': 'gdk-pixbuf-2.0',  },
     { 'gir': 'Gegl-0.4',          'vapi': 'gegl-0.4',        },
-    { 'gir': 'GExiv2-0.10',       'vapi': 'gexiv2',          },
+    { 'gir': 'GExiv2-0.16',       'vapi': 'gexiv2-0.16',          },
     { 'gir': 'Gio-2.0',           'vapi': 'gio-2.0',         },
     { 'gir': gio_specific_gir,    'vapi': gio_specific_vapi, },
     { 'gir': 'GLib-2.0',          'vapi': 'glib-2.0',        },
@@ -574,6 +574,12 @@ else
   if platform_osx
     gir_env.append('CFLAGS', '-Wno-unused-command-line-argument', separator: ' ')
     gir_env.append('LDFLAGS', '-Wl,-w', separator: ' ')
+    gir_env.prepend('DYLD_LIBRARY_PATH', meson.project_build_root() / 'libgimp', separator: ':')
+    gir_env.prepend('DYLD_LIBRARY_PATH', meson.project_build_root() / 'libgimpbase', separator: ':')
+    gir_env.prepend('DYLD_LIBRARY_PATH', meson.project_build_root() / 'libgimpcolor', separator: ':')
+    gir_env.prepend('DYLD_LIBRARY_PATH', meson.project_build_root() / 'libgimpconfig', separator: ':')
+    gir_env.prepend('DYLD_LIBRARY_PATH', meson.project_build_root() / 'libgimpmath', separator: ':')
+    gir_env.prepend('DYLD_LIBRARY_PATH', meson.project_build_root() / 'libgimpmodule', separator: ':')
   endif
 
   gir_args = [
@@ -721,12 +727,14 @@ else
     libgimp_vapi = gnome.generate_vapi('gimp-' + gimp_api_version,
       sources: libgimp_gir[0],
       packages: vapi_deps,
+      vapi_dirs: [meson.project_build_root() / 'vapi'],
       install: true,
     )
 
     libgimpui_vapi = gnome.generate_vapi('gimp-ui-' + gimp_api_version,
       sources: libgimpui_gir[0],
       packages: vapi_deps + [ libgimp_vapi ],
+      vapi_dirs: [meson.project_build_root() / 'vapi'],
       install: true,
     )
   endif
